@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mapa VT</title>
+    <link rel='stylesheet' href='resources/mapbox-gl.css' />
+    <script src='resources/mapbox-gl.js'></script>
+    <link href='resources/mapbox-gl-inspect.css' rel='stylesheet' />
+    <script src='resources/mapbox-gl-inspect.min.js'></script>
+
+<script src='resources/polyline.min.js'></script>
+<script src='resources/turf.min.js'></script>
+    <style>
+        body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map = new mapboxgl.Map({
+        container: 'map', // id del elemento HTML que contendrá el mapa
+        style: 'https://map.todus.cu/styles/basic-preview/style.json',
+        center: [-82.38304, 23.13302], // Ubicación inicial
+        zoom: 13, // Zoom inicial
+        //bearing: -45, // Ángulo de rotación inicial
+        hash: true, // Permite ir guardando la posición del mapa en la URL
+        
+
+placeholder: 'Search for places in map', // Placeholder text for the search bar
+  bbox: [-122.30937, 37.84214, -122.23715, 37.89838],
+  proximity: {
+    longitude: -122.25948,
+    latitude: 37.87221
+  }
+    });
+
+map.on('style.load', function() {
+  map.on('click', function(e) {
+    var coordinates = e.lngLat;
+    new mapboxgl.Popup()
+      .setLngLat(coordinates)
+      .setHTML('you clicked here: <br/>' + coordinates)
+      .addTo(map);
+  });
+});
+
+
+
+    // Agrega controles de navegación (zoom, rotación) al mapa:
+    map.addControl(new mapboxgl.NavigationControl());
+
+    // Agregar el control de inspección
+    map.addControl(new MapboxInspect());
+
+
+// Make each route visible
+map.setLayoutProperty('theRoute', 'visibility', 'visible');
+map.setLayoutProperty('theBox', 'visibility', 'visible');
+
+// Get GeoJSON LineString feature of route
+const routeLine = polyline.toGeoJSON(e.geometry);
+
+// Placeholder for upcoming code here
+</script>
+</body>
+</html>
